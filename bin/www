@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+// compact web server, yay!
+var app = require( '../app' ),
+    debug = require( 'debug' )( 'SkimpyExpress:server' ),
+    http = require( 'http' ),
+    // cache 1337 port for this Express app or set env. variable
+    port = ( function( p ) {
+      var val = parseInt( p, 10 );
+      // pipe
+      if ( isNaN( val ) ) {
+        return p
+      }
+      // + port number, classic
+      if ( val >= 0 ) {
+        return val
+      }
+      // - port number, OMG!
+      return false
+    } )( process.env.PORT || '1337' ),
+    server = null
+; // set port our app will listen to
+app.set( 'port', port )
+; // HTTP server, go!
+server = http.createServer( app )
+; // Listen on provided port, on all network interfaces
+server.listen( port )
+; // HTTP server onError
+server.on( 'error', function( error ) {
+  if ( error.syscall !== 'listen' ) {
+    throw error;
+  }
+  var bind = ( ( typeof( port ) === typeof( '' ) ) ? ( 'Pipe ' + port ) : ( 'Port ' + port ) );
+  // handle specific listen errors with friendly messages
+  if ( error.code === 'EACCES' ) {
+    console.error( bind + ' requires elevated privileges' )
+    ;
+    process.exit( 1 )
+  } else if ( error.code === 'EADDRINUSE' ) {
+    console.error( bind + ' is already in use' )
+    ;
+    process.exit( 1 )
+  } else {
+    throw error;
+  }
+} )
+; // HTTP server onListening
+server.on( 'listening', function() {
+  var addr = server.address(),
+      bind = ( ( typeof( addr ) === typeof( '' ) ) ? ( 'pipe ' + addr ) : ( 'port ' + addr.port ) )
+  ;
+  debug( 'Listening on ' + bind )
+} )
+;

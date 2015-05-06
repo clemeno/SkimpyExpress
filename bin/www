@@ -3,6 +3,7 @@
 var app = require( '../app' ),
     debug = require( 'debug' )( 'SkimpyExpress:server' ),
     http = require( 'http' ),
+    request = require( 'request' ),
     // cache 1337 port for this Express app or set env. variable
     port = ( function( p ) {
       var val = parseInt( p, 10 );
@@ -17,7 +18,8 @@ var app = require( '../app' ),
       // - port number, OMG!
       return false
     } )( process.env.PORT || '1337' ),
-    server = null
+    server = null,
+    socketIO = null
 ; // set port our app will listen to
 app.set( 'port', port )
 ; // HTTP server, go!
@@ -49,5 +51,25 @@ server.on( 'listening', function() {
       bind = ( ( typeof( addr ) === typeof( '' ) ) ? ( 'Pipe ' + addr ) : ( 'Port ' + addr.port ) )
   ;
   debug( 'Listening on ' + bind )
+} )
+; // socket io, go!
+socketIO = require( 'socket.io' )( server )
+; // a socket io client connects
+socketIO.on( 'connection', function( socket ) {
+  debug( 'client connected' )
+  ;
+  request( 'http://localhost:' + port + '/rest/api/transaction', function( error, response, body ) {
+    socket.emit( 'welcome_package', {
+      error: error,
+      response: response,
+      body: body
+    } )
+    ;
+    debug( 'welcome package sent' )
+  } )
+  ; // this socket io client disconnects
+  socket.on( 'disconnect', function() {
+    debug( 'client disconnected' )
+  } )
 } )
 ;

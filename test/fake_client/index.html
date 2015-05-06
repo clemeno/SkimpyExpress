@@ -21,8 +21,8 @@
         <br />
         <div class="row container">
           <form class="virtual-transaction-parameters-form col s6">
-            <h5 class="center">Add virtual transaction</h5>
-            <h6>Card</h6>
+            <h4 class="center">Add virtual transaction</h4>
+            <h5>Card</h5>
             <div class="row">
               <div class="input-field col s4">
                 <input id="cardbalance" name="cardbalance" type="text" class="validate">
@@ -37,14 +37,14 @@
                 <label for="cardtype">Type</label>
               </div>
             </div>
-            <h6>Terminal</h6>
+            <h5>Terminal</h5>
             <div class="row">
               <div class="input-field col s12">
                 <input id="terminalserial" name="terminalserial" type="text" class="validate">
                 <label for="terminalserial">Serial</label>
               </div>
             </div>
-            <h6>Transaction</h6>
+            <h5>Transaction</h5>
             <div class="row">
               <div class="input-field col s6">
                 <input id="transactionamount" name="transactionamount" type="text" class="validate">
@@ -72,12 +72,13 @@
             </div>
           </form>
           <div class="col s6">
-            <h5 class="center">Real-time transactions</h5>
+            <h4 class="center">Real-time transactions</h4>
             <div class="transaction-list-container"></div>
           </div>
         </div>
       </div>
     </article>
+    <script src="bower_components/socket.io-client/socket.io.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/materialize/dist/js/materialize.min.js"></script>
     <script src="js/index.js"></script>

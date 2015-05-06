@@ -27,7 +27,7 @@ server.listen( port )
 ; // HTTP server onError
 server.on( 'error', function( error ) {
   if ( error.syscall !== 'listen' ) {
-    throw error;
+    throw error
   }
   var bind = ( ( typeof( port ) === typeof( '' ) ) ? ( 'Pipe ' + port ) : ( 'Port ' + port ) );
   // handle specific listen errors with friendly messages
@@ -40,13 +40,13 @@ server.on( 'error', function( error ) {
     ;
     process.exit( 1 )
   } else {
-    throw error;
+    throw error
   }
 } )
 ; // HTTP server onListening
 server.on( 'listening', function() {
   var addr = server.address(),
-      bind = ( ( typeof( addr ) === typeof( '' ) ) ? ( 'pipe ' + addr ) : ( 'port ' + addr.port ) )
+      bind = ( ( typeof( addr ) === typeof( '' ) ) ? ( 'Pipe ' + addr ) : ( 'Port ' + addr.port ) )
   ;
   debug( 'Listening on ' + bind )
 } )

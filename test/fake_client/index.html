@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Real-Time Terminal Transactions</title>
+    <link type="text/css" rel="stylesheet" href="bower_components/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/index.css"  media="screen,projection"/>
+  </head>
+  <body>
+    <article>
+      <header>
+        <nav class="grey darken-3">
+          <div class="container">
+            <a class="brand-logo">Real-Time Transactions</a>
+          </div>
+        </nav>
+      </header>
+      <div class="virtual-transaction-parameters">
+        <br />
+        <div class="row container">
+          <form class="virtual-transaction-parameters-form col s6">
+            <h5 class="center">Add virtual transaction</h5>
+            <h6>Card</h6>
+            <div class="row">
+              <div class="input-field col s4">
+                <input id="cardbalance" name="cardbalance" type="text" class="validate">
+                <label for="cardbalance">Balance</label>
+              </div>
+              <div class="input-field col s4">
+                <input id="cardserial" name="cardserial" type="text" class="validate">
+                <label for="cardserial">Serial</label>
+              </div>
+              <div class="input-field col s4">
+                <input id="cardtype" name="cardtype" type="text" class="validate">
+                <label for="cardtype">Type</label>
+              </div>
+            </div>
+            <h6>Terminal</h6>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="terminalserial" name="terminalserial" type="text" class="validate">
+                <label for="terminalserial">Serial</label>
+              </div>
+            </div>
+            <h6>Transaction</h6>
+            <div class="row">
+              <div class="input-field col s6">
+                <input id="transactionamount" name="transactionamount" type="text" class="validate">
+                <label for="transactionamount">Amount</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="transactionresult" name="transactionresult" type="text" class="validate">
+                <label for="transactionresult">Result</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <input id="transactiontimestamp" name="transactiontimestamp" type="text" class="validate">
+                <label for="transactiontimestamp">Timestamp</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="transactiontype" name="transactiontype" type="text" class="validate">
+                <label for="transactiontype">Type</label>
+              </div>
+            </div>
+            <div class="container">
+              <div class="right">
+                <a class="btn-floating btn-large waves-effect waves-light teal virtual-transaction-action-add"><i class="mdi-content-add"></i></a>
+              </div>
+            </div>
+          </form>
+          <div class="col s6">
+            <h5 class="center">Real-time transactions</h5>
+            <div class="transaction-list-container"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/materialize/dist/js/materialize.min.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

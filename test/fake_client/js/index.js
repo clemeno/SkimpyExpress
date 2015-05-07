@@ -8,7 +8,7 @@ $( document ).ready( function() {
         JSON_body.result.rows.forEach( function( transaction ) {
           $(
               ' <div class="card-panel"> '
-            +   ' <h5>Transaction #' + ( Date.now() ) + '</h5> '
+            +   ' <h5>Transaction #' + ( transaction.id ) + '</h5> '
             +   ' <div class="row"> '
             +     ' <div class="col s4"> '
             +       ' <div><strong>Transaction</strong></div> '
@@ -31,7 +31,7 @@ $( document ).ready( function() {
             +     ' </div> '
             +   ' </div> '
             + ' </div> '
-          ).appendTo( '.transaction-list-container' )
+          ).prependTo( '.transaction-list-container' )
         } )
       }
     }

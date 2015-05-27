@@ -1,3 +1,18 @@
 body {
   color: #444;
 }
+.row {
+  margin-bottom: 0;
+}
+.card-panel {
+  padding: 1rem;
+  border-radius: 0;
+}
+.rack {
+  display: block;
+}
+.rackable {
+  margin-top: 0.4rem;
+  display: inline-block;
+  vertical-align: top;
+}

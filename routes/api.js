@@ -1,89 +1,92 @@
 var express = require( 'express' ),
-    cassandraDrv = require( 'cassandra-driver' ),
-    // use a default Cli to a fresh Cassandra demo. Test Cluster
-    // using custom arbitrary keyspace
-    cassandraCli = new cassandraDrv.Client( {
-      contactPoints: [ '127.0.0.1' ],
-      keyspace: 'terminaltransactionkeys001'
+    mysqlDrv = require( 'mysql' ),
+    mysqlCli = mysqlDrv.createConnection( {
+      host: 'localhost',
+      user: 'root',
+      password: 'azerty',
+      database: 'terminaltransactions001',
+      stringifyObjects: true,
+      supportBigNumbers: true,
+      bigNumberStrings: true
     } ),
     router = express.Router()
-; // custom REST route for our API
+;
 router.route( '/rest/api/transaction' )
   .get( function( req, res, next ) {
     res.header( 'Access-Control-Allow-Origin', '*' )
-    ; // READ all data from a table `transactions`
-    cassandraCli.execute( ' SELECT * FROM transactions ', function( error, result ) {
-      // sending a consistant structure in this code
-      // but ( void 0 ) placeholders will disable irrelevant entries at runtime
-      if ( !error ) {
-        res.send( {
-          method: 'GET',
-          route: '/rest/api/transaction',
-          action: 'READ success',
-          result: result,
-          error: void 0
-        } )
-      } else {
-        res.send( {
-          method: 'GET',
-          route: '/rest/api/transaction',
-          action: 'READ fail',
-          result: void 0,
-          error: error
-        } )
-      }
-    } )
+    ;
+    try {
+      mysqlCli.query( " SELECT * from transactions ", function( error, rows, fields ) {
+        if ( error ) {
+          res.send( {
+            method: 'GET',
+            route: '/rest/api/transaction',
+            action: 'READ fail',
+            result: void 0,
+            error: error
+          } )
+        } else {
+          res.send( {
+            method: 'GET',
+            route: '/rest/api/transaction',
+            action: 'READ success',
+            result: rows,
+            error: void 0
+          } )
+        }
+      } )
+    } catch ( exception ) {
+      res.send( {
+        method: 'GET',
+        route: '/rest/api/transaction',
+        action: 'READ fail',
+        result: void 0,
+        error: exception
+      } )
+    }
   } )
   .post( function( req, res, next ) {
     res.header( 'Access-Control-Allow-Origin', '*' )
-    ;
-    cassandraCli.execute(
-        ' INSERT INTO transactions '
-      + ' ( id, card_balance, card_serial, card_type, terminal_serial, transaction_amount, transaction_result, transaction_timestamp, transaction_type ) '
-      + ' VALUES '
-      + ' ( uuid(), ?, ?, ?, ?, ?, ?, ?, ? ) ',
-      [
-        ( 1 * req.body.cardbalance ),
-        ( '' + req.body.cardserial ),
-        ( 1 * req.body.cardtype ),
-        ( '' + req.body.terminalserial ),
-        ( 1 * req.body.transactionamount ),
-        ( 1 * req.body.transactionresult ),
-        ( 1 * req.body.transactiontimestamp ),
-        ( 1 * req.body.transactiontype )
-      ],
-      {
-        hints : [
-          'bigint',
-          'varchar',
-          'int',
-          'varchar',
-          'bigint',
-          'int',
-          'bigint',
-          'int'
-        ]
-      },
-      function( error ) {
-        if ( !error ) {
+    ; // INSERT INTO `transactions` VALUES ( '16500', 57436658676587645', '1', '11310', '300', '0', '1524', '4' );
+    try {
+      mysqlCli.query( " INSERT INTO transactions SET id=?, card_balance=?, card_serial=?, card_type=?, terminal_serial=?, transaction_amount=?, transaction_result=?, transaction_timestamp=?, transaction_type=? ", [
+        null,
+        req.body.cardbalance,
+        req.body.cardserial,
+        req.body.cardtype,
+        req.body.terminalserial,
+        req.body.transactionamount,
+        req.body.transactionresult,
+        req.body.transactiontimestamp,
+        req.body.transactiontype
+      ], function( error, result ) {
+        if ( error ) {
           res.send( {
             method: 'POST',
             route: '/rest/api/transaction',
-            action: 'CREATE success',
-            result: req.body,
-            error: void 0
+            action: 'CREATE fail',
+            result: result,
+            error: error
           } )
         } else {
           res.send( {
             method: 'POST',
             route: '/rest/api/transaction',
-            action: 'CREATE fail',
-            result: req.body,
-            error: error
+            action: 'CREATE success',
+            result: result,
+            error: void 0
           } )
         }
-      }
-    )
+      } )
+    } catch ( exception ) {
+      res.send( {
+        method: 'POST',
+        route: '/rest/api/transaction',
+        action: 'CREATE fail',
+        result: void 0,
+        error: exception
+      } )
+    }
   } )
 ;
 module.exports = router
